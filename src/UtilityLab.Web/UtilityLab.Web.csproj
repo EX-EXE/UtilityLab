@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
+    <BaseHref>/UtilityLab/</BaseHref>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,4 +13,22 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.0" PrivateAssets="all" />
   </ItemGroup>
 
+  <Target Name="FixBaseHref" AfterTargets="Publish">
+    <Message Importance="high" Text="Fixing base href to '$(BaseHref)' ..." />
+
+    <ItemGroup>
+      <PublishedIndex Include="$(PublishDir)wwwroot/index.html" />
+    </ItemGroup>
+
+
+    <WriteLinesToFile
+        File="@(PublishedIndex)"
+        Overwrite="true"
+        Lines="$([System.Text.RegularExpressions.Regex]::Replace(
+          $([System.IO.File]::ReadAllText('%(PublishedIndex.Identity)')),
+          '&lt;base href=&quot;/&quot; /&gt;',
+          '&lt;base href=&quot;$(BaseHref)&quot; /&gt;'
+      ))" />
+    
+  </Target>
 </Project>
