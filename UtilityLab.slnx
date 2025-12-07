@@ -1,0 +1,5 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/UtilityLab.Web/UtilityLab.Web.csproj" />
+  </Folder>
+</Solution>
